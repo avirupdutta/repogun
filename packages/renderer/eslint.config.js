@@ -90,7 +90,11 @@ export default tseslint.config([
           extensions: ['.tsx', '.stories.tsx'],
         },
       ],
-      'import/no-extraneous-dependencies': ['error', { devDependencies: ['vite.config.js'] }],
+      'import/no-extraneous-dependencies': [
+        'error',
+        'ignorePackages',
+        { devDependencies: ['vite.config.js'] },
+      ],
       'import/extensions': [
         'error',
         'ignorePackages',
@@ -99,6 +103,82 @@ export default tseslint.config([
           'jsx': 'never',
           'ts': 'never',
           'tsx': 'never',
+        },
+      ],
+    },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
+        typescript: {},
+      },
+    },
+  },
+  // Configuration for .eslintrc files
+  {
+    files: ['.eslintrc.{js,cjs}'],
+    languageOptions: {
+      globals: globals.node,
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
+  },
+  // Configuration for Storybook files
+  {
+    files: ['*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],
+    rules: {
+      'storybook/hierarchy-separator': 'error',
+      'storybook/default-exports': 'off',
+      'import/no-extraneous-dependencies': 'off',
+    },
+  },
+  // Configuration for mock files
+  {
+    files: ['**/mocks/*.ts'],
+    rules: {
+      'import/no-extraneous-dependencies': 'off',
+      'import/prefer-default-export': 'off',
+    },
+  },
+  // Configuration for query/request files
+  {
+    files: ['*.@(queries|requests).ts'],
+    rules: {
+      'import/prefer-default-export': 'off',
+    },
+  },
+  // Configuration for utils files
+  {
+    files: ['**/utils/*.*'],
+    rules: {
+      'import/prefer-default-export': 'off',
+    },
+  },
+  // Configuration for import sorting
+  {
+    files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
+    rules: {
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            // Style imports.
+            ['^.+\\.?(css)$'],
+            // Packages `react` related
+            ['^react', '^@?\\w'],
+            // Peer packages.
+            ['^@iee(/.*|$)'],
+            // Internal packages.
+            ['^(@|components)(/.*|$)'],
+            // Side effect imports.
+            ['^\\u0000'],
+            // Parent imports. Put `..` last.
+            ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+            // Other relative imports. Put same-folder imports and `.` last.
+            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+          ],
         },
       ],
     },
