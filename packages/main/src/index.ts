@@ -7,6 +7,7 @@ import {hardwareAccelerationMode} from './modules/HardwareAccelerationModule.js'
 import {autoUpdater} from './modules/AutoUpdater.js';
 import {allowInternalOrigins} from './modules/BlockNotAllowdOrigins.js';
 import {allowExternalUrls} from './modules/ExternalUrls.js';
+import {createFolderSelectionModule} from './modules/FolderSelectionModule.js';
 
 
 export async function initApp(initConfig: AppInitConfig) {
@@ -40,7 +41,8 @@ export async function initApp(initConfig: AppInitConfig) {
           ]
           : [],
       )),
-    );
+    )
+    .init(createFolderSelectionModule());
 
   await moduleRunner;
 }

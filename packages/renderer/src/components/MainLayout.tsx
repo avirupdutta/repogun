@@ -10,8 +10,15 @@ import {
 } from '@tabler/icons-react';
 
 import CodeEditor from './CodeEditor';
-import FileTree, { sampleFileTree } from './FileTree';
+import FileTree from './FileTree';
 import SelectedFiles from './SelectedFiles';
+
+interface FileNode {
+  name: string;
+  path: string;
+  type: 'file' | 'folder';
+  children?: FileNode[];
+}
 
 interface SelectedFile {
   name: string;
@@ -20,7 +27,12 @@ interface SelectedFile {
   tokens: number;
 }
 
-const MainLayout: React.FC = () => {
+interface MainLayoutProps {
+  fileTree: FileNode[] | null;
+  selectedFolderPath: string | null;
+}
+
+const MainLayout: React.FC<MainLayoutProps> = ({ fileTree }) => {
   const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([
     {
       name: 'Hero.css',
@@ -66,18 +78,10 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <AppShell
-      navbar={{ width: 300, breakpoint: 'sm' }}
-      padding={0}
-      style={{ height: '100vh' }}
-    >
+    <AppShell navbar={{ width: 300, breakpoint: 'sm' }} padding={0} style={{ height: '100vh' }}>
       <AppShell.Navbar p={0} style={{ borderRight: '1px solid #e9ecef' }}>
         {/* Sidebar Header */}
-        <Group
-          justify="space-between"
-          p="sm"
-          style={{ borderBottom: '1px solid #e9ecef' }}
-        >
+        <Group justify="space-between" p="sm" style={{ borderBottom: '1px solid #e9ecef' }}>
           <Group gap="xs">
             <ActionIcon variant="light" size="sm">
               <IconSortAscending size={16} />
@@ -117,18 +121,12 @@ const MainLayout: React.FC = () => {
         </Box>
 
         {/* File Tree */}
-        <FileTree files={sampleFileTree} onFileSelect={handleFileSelect} />
+        {fileTree && <FileTree files={fileTree} onFileSelect={handleFileSelect} />}
       </AppShell.Navbar>
 
-      <AppShell.Main
-        style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}
-      >
+      <AppShell.Main style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <Box p="sm" style={{ borderBottom: '1px solid #e9ecef' }}>
-          <SelectedFiles
-            files={selectedFiles}
-            totalTokens={totalTokens}
-            onCopy={handleCopy}
-          />
+          <SelectedFiles files={selectedFiles} totalTokens={totalTokens} onCopy={handleCopy} />
         </Box>
         <Box style={{ flex: 1 }}>
           <CodeEditor onNewChat={handleNewChat} />

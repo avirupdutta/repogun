@@ -1,38 +1,22 @@
 import React, { useState } from 'react';
 
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Group,
-  Tabs,
-  Text,
-  Textarea,
-} from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Tabs, Text, Textarea } from '@mantine/core';
 import { IconMessage, IconPlus, IconSettings } from '@tabler/icons-react';
 
 interface CodeEditorProps {
   onNewChat: () => void;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ onNewChat }) => {
+const CodeEditor: React.FC<CodeEditorProps> = () => {
   const [activeTab, setActiveTab] = useState('instructions');
-  const [instructions, setInstructions] = useState('');
+  const [instructions, setInstructions] = useState<string | null>(null);
 
   return (
     <Box style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Top Action Bar */}
-      <Group
-        justify="space-between"
-        p="sm"
-        style={{ borderBottom: '1px solid #e9ecef' }}
-      >
+      <Group justify="space-between" p="sm" style={{ borderBottom: '1px solid #e9ecef' }}>
         <Group gap="sm">
-          <Button
-            variant="light"
-            size="sm"
-            style={{ background: '#007bff', color: 'white' }}
-          >
+          <Button variant="light" size="sm" style={{ background: '#007bff', color: 'white' }}>
             Compose
           </Button>
           <Button variant="light" size="sm">
@@ -54,9 +38,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onNewChat }) => {
       {/* Tabs */}
       <Tabs
         value={activeTab}
-        onChange={setActiveTab}
-        style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
-      >
+        onChange={(value) => setActiveTab(value ?? 'instructions')}
+        style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Tabs.List>
           <Tabs.Tab value="instructions">Instructions</Tabs.Tab>
           <Tabs.Tab value="codemap">Code Map</Tabs.Tab>
@@ -74,12 +57,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onNewChat }) => {
         <Box style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Tabs.Panel
             value="instructions"
-            style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
-          >
+            style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Textarea
               placeholder="Enter your instructions here..."
-              value={instructions}
-              onChange={(event) => setInstructions(event.currentTarget.value)}
+              value={instructions ?? ''}
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                const handler: (value: string | null) => void = setInstructions;
+                handler(event.currentTarget.value);
+              }}
               style={{ flex: 1 }}
               styles={{
                 input: {
@@ -92,12 +77,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ onNewChat }) => {
             />
           </Tabs.Panel>
 
-          <Tabs.Panel value="codemap">
-            Code map content would go here
-          </Tabs.Panel>
-          <Tabs.Panel value="xmldiff">
-            XML Diff content would go here
-          </Tabs.Panel>
+          <Tabs.Panel value="codemap">Code map content would go here</Tabs.Panel>
+          <Tabs.Panel value="xmldiff">XML Diff content would go here</Tabs.Panel>
         </Box>
       </Tabs>
     </Box>

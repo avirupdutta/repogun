@@ -34,7 +34,7 @@ const FileTreeItem: React.FC<{
   level: number;
   onSelect: (path: string, selected: boolean) => void;
 }> = ({ node, level, onSelect }) => {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [checked, setChecked] = useState(node.selected || false);
 
   const handleToggle = () => {
@@ -119,78 +119,5 @@ const FileTree: React.FC<FileTreeProps> = ({ files, onFileSelect }) => {
     </ScrollArea>
   );
 };
-
-// Sample data structure based on your project
-export const sampleFileTree: FileNode[] = [
-  {
-    name: 'src',
-    path: 'src',
-    type: 'folder',
-    selected: true,
-    children: [
-      {
-        name: 'components',
-        path: 'src/components',
-        type: 'folder',
-        selected: true,
-        children: [
-          { name: 'Demo.css', path: 'src/components/Demo.css', type: 'file' },
-          {
-            name: 'Features.css',
-            path: 'src/components/Features.css',
-            type: 'file',
-          },
-          {
-            name: 'Footer.css',
-            path: 'src/components/Footer.css',
-            type: 'file',
-          },
-          {
-            name: 'Hero.css',
-            path: 'src/components/Hero.css',
-            type: 'file',
-            selected: true,
-          },
-          {
-            name: 'PrivacyPolicy.css',
-            path: 'src/components/PrivacyPolicy.css',
-            type: 'file',
-          },
-          {
-            name: 'Screenshots.css',
-            path: 'src/components/Screenshots.css',
-            type: 'file',
-          },
-          {
-            name: 'TermsAndConditions.css',
-            path: 'src/components/TermsAndConditions.css',
-            type: 'file',
-          },
-          {
-            name: 'ThemeSwitcher.css',
-            path: 'src/components/ThemeSwitcher.css',
-            type: 'file',
-          },
-          {
-            name: 'Toolbar.css',
-            path: 'src/components/Toolbar.css',
-            type: 'file',
-          },
-        ],
-      },
-      {
-        name: 'styles',
-        path: 'src/styles',
-        type: 'folder',
-        children: [
-          { name: 'theme.css', path: 'src/styles/theme.css', type: 'file' },
-        ],
-      },
-      { name: 'App.css', path: 'src/App.css', type: 'file' },
-      { name: 'index.css', path: 'src/index.css', type: 'file' },
-      { name: 'tailwind.css', path: 'src/tailwind.css', type: 'file' },
-    ],
-  },
-];
 
 export default FileTree;
